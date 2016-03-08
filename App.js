@@ -1,32 +1,31 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 //Stateless function Component:
 //const App = () => <h1>Hello World!</h1>
 
 class App extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      txt: 'this is the state txt'
+    }
+  }
+  update(e){
+    this.setState({
+      txt: e.target.value
+    })
+  }
   render() {
-    let { text, cat } = this.props;
     return (
       <div>
-        <h1>{cat}. {text}</h1>
+        <h1>{this.state.txt}</h1>
+        <input type="text"
+          onChange={this.update.bind(this)} />
       </div>
     )
   }
 }
-App.propTypes = {
-  text: React.PropTypes.string.isRequired,
-  cat: React.PropTypes.number.isRequired
-}
-App.defaultProps = {
-  text: 'this is the default text',
-  cat: 999
-}
 
-ReactDOM.render(
-  <App text="this is the props text" cat={5} />,
-  document.getElementById('app')
-);
 
 
 export default App;
