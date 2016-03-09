@@ -1,23 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-//Stateless function Component:
-//const App = () => <h1>Hello World!</h1>
-
-class App extends React.Component {
-  constructor(){
+let Mixin = InnerComponent => class extends React.Component {
+  constructor() {
     super();
+    this.update = this.update.bind(this);
     this.state = {
+<<<<<<< HEAD
       value: 0
+=======
+      val: 0
+>>>>>>> master
     }
-    this.update = this.update.bind(this)
   }
-  update(e){
+  update() {
     this.setState({
+<<<<<<< HEAD
       value: ReactDOM.findDOMNode(this.refs.value.refs.input).value
+=======
+      val: this.state.val + 1
+>>>>>>> master
     })
   }
+  componentWillMount() {
+    console.log('will mount');
+  }
+  componentDidMount() {
+    console.log('mounted');
+  }
   render() {
+<<<<<<< HEAD
     return (
       <div>
         <NumInput
@@ -34,9 +46,26 @@ class App extends React.Component {
 }
 
 class NumInput extends React.Component{
+=======
+    return <InnerComponent
+      update={this.update}
+      {...this.props}
+      {...this.state} />
+  }
+}
+
+const Button = (props) => <button className={props.classNames} onClick={props.update}>
+                            {props.txt} - {props.val}
+                          </button>
+
+let ButtonMixed = Mixin(Button);
+
+class App extends React.Component {
+>>>>>>> master
   render() {
     let label = this.props.label !== '' ? <label style={{'padding': '10px', 'margin': '10px'}}>{this.props.label} - {this.props.val}</label> : '';
     return (
+<<<<<<< HEAD
       <div className="container">
         <div className="row">
           {label}
@@ -51,11 +80,16 @@ class NumInput extends React.Component{
             defaultValue={this.props.val}
             onChange={this.props.update} />
         </div>
+=======
+      <div>
+        <ButtonMixed txt="Button" classNames="btn btn-success" />
+>>>>>>> master
       </div>
     );
   }
 }
 
+<<<<<<< HEAD
 NumInput.propTypes = {
   min: React.PropTypes.number,
   max: React.PropTypes.number,
@@ -75,4 +109,6 @@ NumInput.defaultProps = {
   type: 'range'
 }
 
+=======
+>>>>>>> master
 export default App;
