@@ -1,41 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class App extends React.Component {
+let Mixin = InnerComponent => class extends React.Component {
   constructor() {
     super();
     this.update = this.update.bind(this);
     this.state = {
-      increasing: false
+      val: 0
     }
   }
   update() {
-    ReactDOM.render(
-      <App val={this.props.val+1} />, document.getElementById('app')
-    );
-  }
-  componentWillReceiveProps(nextProps) {
     this.setState({
-      increasing: nextProps.val > this.props.val
+      val: this.state.val + 1
     })
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.val % 5 === 0;
+  componentWillMount() {
+    console.log('will mount');
   }
-  componentDidUpdate(prevProps, prevState) {
-    console.log('prevProps', prevProps)
+  componentDidMount() {
+    console.log('mounted');
   }
   render() {
-    return (
-      <button className="btn btn-success" style={{'padding':'10px 50px 10px 50px','fontSize':'2rem'}} onClick={this.update}>
-        {this.props.val}
-      </button>
-    )
+    return <InnerComponent
+      update={this.update}
+      {...this.props}
+      {...this.state} />
   }
 }
 
-App.defaultProps = {
-  val: 0
+const Button = (props) => <button className={props.classNames} onClick={props.update}>
+                            {props.txt} - {props.val}
+                          </button>
+
+let ButtonMixed = Mixin(Button);
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <ButtonMixed txt="Button" classNames="btn btn-success" />
+      </div>
+    );
+  }
 }
 
 export default App;
