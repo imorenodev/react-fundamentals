@@ -11,13 +11,15 @@ class App extends React.Component {
     this.reset = this.reset.bind(this);
   }
   componentWillMount() {
-    console.log('mounting');
+    this.setState({
+      m: 2
+    })
   }
   componentDidMount() {
-    console.log('mounted');
+    this.inc = setInterval(this.update,500)
   }
   componentWillUnmount() {
-    console.log('bye!');
+    clearInterval(this.inc);
   }
   update() {
     this.setState({
@@ -33,7 +35,7 @@ class App extends React.Component {
     console.log('rendering!');
     return (
       <div className="container" style={{'textAlign': 'center'}}>
-        <button className="btn btn-lg btn-success" style={{'padding': '10px 40px 10px 40px','marginTop':'10px'}} onClick={this.update}>{this.state.val}</button>
+        <button className="btn btn-lg btn-success" style={{'padding': '10px 40px 10px 40px','marginTop':'10px'}} onClick={this.update}>{this.state.val + this.state.m}</button>
         <button className="btn btn-sma btn-warning" style={{'display':'block','margin':'10px auto'}} onClick={this.reset}>reset</button>
       </div>
     );
