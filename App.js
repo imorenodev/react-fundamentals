@@ -4,63 +4,38 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      val: 0
-    }
     this.update = this.update.bind(this);
-    this.reset = this.reset.bind(this);
-  }
-  componentWillMount() {
-    this.setState({
-      m: 2
-    })
-  }
-  componentDidMount() {
-    this.inc = setInterval(this.update,500)
-  }
-  componentWillUnmount() {
-    clearInterval(this.inc);
+    this.state = {
+      increasing: false
+    }
   }
   update() {
-    this.setState({
-      val: this.state.val + 1
-    })
-  }
-  reset() {
-    this.setState({
-      val: 0
-    })
-  }
-  render() {
-    console.log('rendering!');
-    return (
-      <div className="container" style={{'textAlign': 'center'}}>
-        <button className="btn btn-lg btn-success" style={{'padding': '10px 40px 10px 40px','marginTop':'10px'}} onClick={this.update}>{this.state.val + this.state.m}</button>
-        <button className="btn btn-sma btn-warning" style={{'display':'block','margin':'10px auto'}} onClick={this.reset}>reset</button>
-      </div>
+    ReactDOM.render(
+      <App val={this.props.val+1} />, document.getElementById('app')
     );
   }
-}
-
-class Wrapper extends React.Component {
-  constructor() {
-    super();
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      increasing: nextProps.val > this.props.val
+    })
   }
-  mount() {
-    ReactDOM.render(<App />, document.getElementById('a'))
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.val % 5 === 0;
   }
-  unmount() {
-    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+  componentDidUpdate(prevProps, prevState) {
+    console.log('prevProps', prevProps)
   }
   render() {
     return (
-      <div>
-        <button onClick={this.mount.bind(this)}>Mount</button>
-        <button onClick={this.unmount.bind(this)}>Unmount</button>
-        <div id="a"></div>
-      </div>
+      <button className="btn btn-success" style={{'padding':'10px 50px 10px 50px','fontSize':'2rem'}} onClick={this.update}>
+        {this.props.val}
+      </button>
     )
   }
 }
 
-export default Wrapper;
+App.defaultProps = {
+  val: 0
+}
+
+export default App;
